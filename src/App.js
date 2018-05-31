@@ -26,6 +26,7 @@ class App extends Component {
 
     this.onAdd = this.onAdd.bind(this);
     this.onDelete = this.onDelete.bind(this);
+    this.onEditSubmit = this.onEditSubmit.bind(this);
   }
 
   componentWillMount() {
@@ -42,6 +43,24 @@ class App extends Component {
     });
 
     this.setState(products);
+  }
+
+  onEditSubmit(name, price, originalName) {
+
+    // because mutated the content, so use 'let'
+    let products = this.getProducts();
+
+    products = products.map(product => {
+      if(product.name == originalName) {
+        product.name = name;
+        product.price = price;
+      }
+
+      // using map, so have to return 
+      return product;
+    });
+
+    this.setState({products});
   }
 
   getProducts() {
@@ -74,6 +93,7 @@ class App extends Component {
                 key={product.name}
                 {...product}
                 onDelete={this.onDelete}
+                onEditSubmit={this.onEditSubmit}
               />
             );
           })
